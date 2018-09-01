@@ -2,12 +2,9 @@ package com.codecool.erste.model;
 
 import javax.persistence.*;
 
-@Entity
+@Embeddable
 public class ContactInfo {
 
-    @Id
-    @ManyToOne
-    private Card card;
 
     private String type;
 
@@ -15,19 +12,12 @@ public class ContactInfo {
 
     public ContactInfo() {}
 
-    public ContactInfo(Card card, String type, String contact) {
-        this.card = card;
+    public ContactInfo(String type, String contact) {
+
         this.type = type;
         this.contact = contact;
     }
 
-    public Card getCard() {
-        return card;
-    }
-
-    public void setCard(Card card) {
-        this.card = card;
-    }
 
     public String getType() {
         return type;
