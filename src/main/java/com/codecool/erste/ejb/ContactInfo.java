@@ -5,7 +5,6 @@ import javax.persistence.*;
 @Embeddable
 public class ContactInfo {
 
-
     private String type;
 
     private String contact;
@@ -17,7 +16,6 @@ public class ContactInfo {
         this.type = type;
         this.contact = contact;
     }
-
 
     public String getType() {
         return type;
