@@ -1,4 +1,4 @@
-package com.codecool.erste.model;
+package com.codecool.erste.ejb;
 
 import javax.persistence.*;
 
