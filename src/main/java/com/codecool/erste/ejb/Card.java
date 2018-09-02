@@ -88,11 +88,11 @@ public class Card implements Serializable {
         this.contactInfos = contactInfos;
     }
 
-    public Boolean getDisabled() {
+    public boolean getDisabled() {
         return disabled;
     }
 
-    public void setDisabled(Boolean disabled) {
+    public void setDisabled(boolean disabled) {
         this.disabled = disabled;
     }
 }
