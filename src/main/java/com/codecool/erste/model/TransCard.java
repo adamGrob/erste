@@ -1,5 +1,7 @@
 package com.codecool.erste.model;
 
+import com.codecool.erste.ejb.ContactInfo;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;

@@ -1,4 +1,6 @@
 package com.codecool.erste.model;
+import com.codecool.erste.ejb.ContactInfo;
+
 import java.util.List;
 
 public class PostCard extends TransCard {

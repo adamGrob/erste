@@ -7,7 +7,7 @@ import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.codecool.erste.controller.CardValidation;
+import com.codecool.erste.controller.CardValidationController;
 import com.codecool.erste.ejb.Card;
 import com.codecool.erste.model.*;
 import com.codecool.erste.model.validationCardModels.ValidCard;
@@ -25,7 +25,7 @@ public class CardServiceRest extends Application {
     CardController cardController;
 
     @Inject
-    CardValidation cardValidation;
+    CardValidationController cardValidationController;
 
 
     @POST
@@ -87,7 +87,7 @@ public class CardServiceRest extends Application {
             System.out.println("There was no matching card in the database based on the cardNumber");
             return Response.status(404).build();
         }
-        ValidationResult validationResult = cardValidation.getValidationResult(card, validCard);
+        ValidationResult validationResult = cardValidationController.getValidationResult(card, validCard);
         String jsonResponse = new Gson().toJson(validationResult, ValidationResult.class);
         return Response.ok(jsonResponse).build();
     }

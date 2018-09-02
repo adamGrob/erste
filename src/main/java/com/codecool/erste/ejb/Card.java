@@ -1,4 +1,4 @@
-package com.codecool.erste.model;
+package com.codecool.erste.ejb;
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
@@ -10,7 +10,6 @@ import java.util.List;
 @Entity
 @XmlRootElement
 public class Card implements Serializable {
-
 
     private String cardType;
 
