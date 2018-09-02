@@ -6,7 +6,6 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
 import com.codecool.erste.controller.CardValidationController;
 import com.codecool.erste.ejb.Card;
 import com.codecool.erste.model.*;
@@ -80,7 +79,7 @@ public class CardServiceRest extends Application {
     @Path("/validate")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response validateCard(String jsonString){
+    public Response validateCard(String jsonString) {
         ValidCard validCard = new Gson().fromJson(jsonString, ValidCard.class);
         Card card = cardController.getCard(validCard.getCardNumber());
         if (card == null) {
@@ -90,6 +89,23 @@ public class CardServiceRest extends Application {
         ValidationResult validationResult = cardValidationController.getValidationResult(card, validCard);
         String jsonResponse = new Gson().toJson(validationResult, ValidationResult.class);
         return Response.ok(jsonResponse).build();
+    }
+
+    @PUT
+    @Path("{cardNumber}")
+    public Response disableCard(@PathParam("cardNumber") String cardNumber) {
+        Card card = cardController.getCard(cardNumber);
+        if (card == null) {
+            System.out.println("There was no matching card in the database based on the cardNumber");
+            return Response.status(404).build();
+        }
+        card.setDisabled(true);
+        cardController.update(card);
+        if(cardController.getCard(card.getCardNumber()).getDisabled()) {
+            System.out.println("Card is successfully disabled.");
+            return Response.ok().build();
+        }
+        return Response.serverError().build();
     }
 
 }
