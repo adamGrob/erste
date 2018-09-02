@@ -20,5 +20,9 @@ public class CardController {
     public Card getCard(String cardNumber) {
         return entityManager.find(Card.class, cardNumber);
     }
+
+    public void update(Card card) {
+        entityManager.merge(card);
+    }
 }
 
