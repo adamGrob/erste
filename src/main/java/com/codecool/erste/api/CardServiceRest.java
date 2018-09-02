@@ -1,5 +1,4 @@
 package com.codecool.erste.api;
-
 import com.codecool.erste.controller.CardController;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -8,10 +7,11 @@ import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.codecool.erste.model.Card;
-import com.codecool.erste.model.GetCard;
-import com.codecool.erste.model.PostCard;
-import com.codecool.erste.model.TransCard;
+import com.codecool.erste.controller.CardValidation;
+import com.codecool.erste.ejb.Card;
+import com.codecool.erste.model.*;
+import com.codecool.erste.model.validationCardModels.ValidCard;
+import com.codecool.erste.model.validationCardModels.ValidationResult;
 import com.google.gson.Gson;
 
 import java.text.ParseException;
@@ -24,11 +24,14 @@ public class CardServiceRest extends Application {
     @Inject
     CardController cardController;
 
+    @Inject
+    CardValidation cardValidation;
+
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addNewCard(String jsonString) throws ParseException {
         PostCard postCard = new Gson().fromJson(jsonString, PostCard.class);
-
         Card card = new Card(
                 postCard.getCardType(),
                 postCard.getCardNumber(),
@@ -37,8 +40,6 @@ public class CardServiceRest extends Application {
                 postCard.getOwner(),
                 postCard.getContactInfos()
         );
-
-
         if(card.getContactInfos() == null) {
             System.out.println("halleluja");
         }
@@ -74,4 +75,21 @@ public class CardServiceRest extends Application {
         String jsonResponse = new Gson().toJson(responseCard, GetCard.class);
         return Response.ok(jsonResponse).build();
     }
+
+    @POST
+    @Path("/validate")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response validateCard(String jsonString){
+        ValidCard validCard = new Gson().fromJson(jsonString, ValidCard.class);
+        Card card = cardController.getCard(validCard.getCardNumber());
+        if (card == null) {
+            System.out.println("There was no matching card in the database based on the cardNumber");
+            return Response.status(404).build();
+        }
+        ValidationResult validationResult = cardValidation.getValidationResult(card, validCard);
+        String jsonResponse = new Gson().toJson(validationResult, ValidationResult.class);
+        return Response.ok(jsonResponse).build();
+    }
+
 }
